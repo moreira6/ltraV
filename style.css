@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka:wght@500;600;700&display=swap');
+:root{font-family:Nunito,sans-serif;color:#292b36;background:#fff8e9}
+*{box-sizing:border-box}
+body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(circle at 10% 10%,#fff0c8 0,transparent 30%),#fff8e9}
+button{font:inherit;cursor:pointer}
+.app-shell{width:min(900px,100%);margin:auto;padding:28px 22px 18px}
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:25px}
+.brand-mark{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;color:white;background:#45a967;font:700 38px Fredoka;box-shadow:0 5px 0 #2d824b}
+.eyebrow{margin:0 0 2px;color:#7d8791;letter-spacing:2px;font-size:10px;font-weight:900}
+h1{font:700 clamp(23px,4vw,34px) Fredoka;margin:0}
+.score{margin-left:auto;background:white;border:2px solid #f3dfb6;border-radius:999px;padding:10px 15px;font-weight:900;white-space:nowrap}
+.progress{display:flex;justify-content:space-between;gap:8px;margin:0 auto 22px;max-width:650px}
+.step{display:flex;align-items:center;gap:7px;color:#a3a3a3;font-weight:800}
+.step span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#e8e4dc}
+.step.active{color:#328d50}.step.active span{color:white;background:#45a967}.step small{font-size:12px}
+.game-card{background:white;border:2px solid #f0e4cd;border-radius:25px;padding:clamp(20px,4vw,36px);text-align:center;box-shadow:0 10px 30px #7d5c2510}
+.phase-tag{display:inline-block;color:#328d50;background:#e9f7ed;padding:6px 13px;border-radius:999px;font-size:11px;letter-spacing:1px;font-weight:900}
+h2{font:700 clamp(25px,4vw,34px) Fredoka;margin:13px 0 5px}
+.instruction{color:#727987;margin:0 0 24px}
+.primary{border:0;border-radius:999px;background:#45a967;color:white;padding:13px 32px;font-weight:900;box-shadow:0 4px 0 #2d824b}
+.primary:hover{background:#378f55;transform:translateY(-1px)}
+.letter-grid{display:grid;grid-template-columns:repeat(3,minmax(65px,105px));justify-content:center;gap:13px;margin:20px auto}
+.letter-tile{height:90px;border:2px solid #e9e3d8;border-radius:18px;background:#fffaf0;color:#303443;font:700 48px Fredoka}
+.letter-tile:hover{transform:translateY(-3px);border-color:#45a967}.letter-tile.found{color:white;background:#45a967;border-color:#45a967}
+.counter{color:#89909b;font-size:13px;font-weight:800;margin:17px 0}
+.palette{display:flex;justify-content:center;gap:12px;margin:12px 0 4px}
+.swatch{width:35px;height:35px;border:3px solid white;outline:2px solid transparent;border-radius:50%}
+.swatch.chosen{outline-color:#343946}
+.paint-letter{display:block;margin:0 auto;border:0;background:transparent;font:900 clamp(190px,35vw,270px)/.95 Fredoka;cursor:pointer;padding:0 20px;color:white;-webkit-text-stroke:3px #222}
+.picture-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.picture-tile{min-height:135px;border:2px solid #eee6d8;border-radius:17px;background:#fffaf1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#303443}
+.picture-tile:hover:not(:disabled){border-color:#45a967;transform:translateY(-2px)}
+.picture-emoji{font-size:42px;line-height:1.2}.picture-tile small{font-size:10px;color:#328d50;font-weight:900}
+.picture-tile.right{background:#eaf7ed;border-color:#45a967}.picture-tile.wrong{background:#fff0ee;border-color:#e58c80;opacity:.75}.picture-tile.wrong small{color:#c05e52}
+.sequence-row{display:flex;justify-content:center;align-items:center;gap:clamp(8px,3vw,22px);margin:35px 0}
+.sequence-row>span{font:700 clamp(42px,8vw,68px) Fredoka;color:#45a967}
+.sequence-slot{width:clamp(55px,12vw,85px);height:clamp(65px,13vw,95px);border:3px dashed #d8cbb5;border-radius:15px;background:#fffaf1;color:#45a967;font:700 48px Fredoka}
+.sequence-slot.filled{border-style:solid;border-color:#45a967;background:#eaf7ed}
+.feedback{margin:15px auto 0;max-width:650px;padding:12px 16px;border-radius:14px;text-align:center;color:#326c45;background:#eaf7ed;font-weight:800;min-height:0}
+.feedback:empty{display:none}
+.final-card{padding:45px 25px}.trophy{font-size:65px;margin-bottom:10px}
+.final-score{color:#45a967;font:700 65px Fredoka;margin:15px}.final-score small{display:block;font:800 13px Nunito;color:#8a9099}
+footer{text-align:center;color:#a19a8d;font-size:12px;margin:25px 0 5px}
+@media(max-width:520px){.app-shell{padding:18px 12px}.topbar{gap:9px}.brand-mark{width:46px;height:46px;font-size:30px;border-radius:14px}.score{padding:8px 10px;font-size:12px}.step{flex-direction:column;gap:3px}.step small{font-size:10px}.picture-grid{grid-template-columns:repeat(2,1fr)}.picture-tile{min-height:120px}}
