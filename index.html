@@ -1,31 +1,733 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#fff4d8">
-  <title>Aventura da Letra V</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aventura da Letra V</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka:wght@500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  background: #fff8e9;
+  color: #292b36;
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.logo {
+  background: #45a967;
+  color: white;
+  border-radius: 15px;
+  padding: 10px 20px;
+  font: 700 35px Fredoka;
+}
+
+h1, h2 {
+  font-family: Fredoka;
+}
+
+h1 {
+  font-size: 28px;
+  margin: 0;
+}
+
+.pontos {
+  background: white;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-weight: 900;
+  border: 2px solid #f3dfb6;
+}
+
+.progresso {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 5px;
+}
+
+.etapa {
+  text-align: center;
+  color: #aaa;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.etapa span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: auto auto 5px;
+  border-radius: 50%;
+  background: #e5e1d8;
+}
+
+.etapa.ativa {
+  color: #328d50;
+}
+
+.etapa.ativa span {
+  background: #45a967;
+  color: white;
+}
+
+.card {
+  background: white;
+  padding: 30px 20px;
+  border-radius: 25px;
+  border: 2px solid #f0e4cd;
+  text-align: center;
+}
+
+h2 {
+  font-size: 32px;
+  margin: 12px 0;
+}
+
+.instrucao {
+  color: #727987;
+  margin-bottom: 25px;
+}
+
+.tag {
+  background: #e9f7ed;
+  color: #328d50;
+  border-radius: 20px;
+  padding: 6px 15px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  max-width: 600px;
+  margin: 25px auto;
+}
+
+.letra {
+  height: 75px;
+  border: 2px solid #e9e3d8;
+  border-radius: 15px;
+  background: #fffaf0;
+  font: 700 35px Fredoka;
+  color: #303443;
+  cursor: pointer;
+}
+
+.letra:hover {
+  border-color: #45a967;
+  transform: translateY(-2px);
+}
+
+.letra.correta {
+  background: #45a967;
+  color: white;
+  border-color: #45a967;
+}
+
+.letra.pintada {
+  background: #e3f6e8;
+  color: #239344;
+  border: 3px solid #45a967;
+}
+
+.letra.errada {
+  background: #ffe5e1;
+  border-color: #e58c80;
+}
+
+.botao {
+  background: #45a967;
+  color: white;
+  border: none;
+  padding: 13px 30px;
+  border-radius: 30px;
+  font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px #2d824b;
+}
+
+.botao:hover {
+  background: #378f55;
+}
+
+.mensagem {
+  margin: 20px auto;
+  padding: 12px;
+  background: #eaf7ed;
+  color: #326c45;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.contador {
+  color: #89909b;
+  font-weight: bold;
+  margin: 15px;
+}
+
+.figuras {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.figura {
+  border: 2px solid #eee6d8;
+  background: #fffaf1;
+  border-radius: 15px;
+  padding: 15px 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.figura .emoji {
+  display: block;
+  font-size: 45px;
+  margin-bottom: 8px;
+}
+
+.figura.correta {
+  background: #eaf7ed;
+  border-color: #45a967;
+}
+
+.figura.errada {
+  background: #ffe5e1;
+  border-color: #e58c80;
+}
+
+.sequencia {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 35px 0;
+}
+
+.espaco {
+  width: 65px;
+  height: 75px;
+  border: 3px dashed #d8cbb5;
+  background: #fffaf1;
+  border-radius: 15px;
+  font: 700 40px Fredoka;
+  color: #45a967;
+  cursor: pointer;
+}
+
+.espaco.preenchido {
+  background: #eaf7ed;
+  border: 3px solid #45a967;
+}
+
+.sequencia span {
+  font: 700 45px Fredoka;
+  color: #45a967;
+}
+
+.final {
+  font-size: 65px;
+}
+
+footer {
+  text-align: center;
+  color: #aaa;
+  margin: 25px;
+  font-size: 12px;
+}
+
+@media(max-width: 550px) {
+  .container {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .logo {
+    padding: 8px 14px;
+    font-size: 28px;
+  }
+
+  .grade {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .letra {
+    height: 65px;
+  }
+
+  .figuras {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    padding: 25px 12px;
+  }
+
+  .espaco {
+    width: 52px;
+    height: 65px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <main class="app-shell">
-    <header class="topbar">
-      <div class="brand-mark">V</div>
-      <div><p class="eyebrow">APRENDER BRINCANDO</p><h1>Aventura da Letra V</h1></div>
-      <div class="score">⭐ <span id="score">0</span> pontos</div>
-    </header>
 
-    <nav class="progress" aria-label="Etapas do jogo">
-      <div class="step active"><span>1</span><small>Encontre</small></div>
-      <div class="step"><span>2</span><small>Pinte</small></div>
-      <div class="step"><span>3</span><small>Figuras</small></div>
-      <div class="step"><span>4</span><small>Sequência</small></div>
-    </nav>
+<div class="container">
 
-    <section class="game-card" id="game"></section>
-    <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
-    <footer>✨ A leitura começa com uma descoberta de cada vez.</footer>
-  </main>
-  <script src="script.js"></script>
+<header>
+  <div class="logo">V</div>
+  <h1>Aventura da Letra V</h1>
+  <div class="pontos">⭐ <span id="pontos">0</span></div>
+</header>
+
+<div class="progresso">
+  <div class="etapa ativa"><span>1</span>Encontre</div>
+  <div class="etapa"><span>2</span>Pinte</div>
+  <div class="etapa"><span>3</span>Figuras</div>
+  <div class="etapa"><span>4</span>Sequência</div>
+</div>
+
+<section class="card" id="jogo"></section>
+
+<div class="mensagem" id="mensagem" style="display:none"></div>
+
+<footer>✨ Aprender brincando é muito mais divertido!</footer>
+
+</div>
+
+<script>
+
+let fase = 0;
+let pontos = 0;
+
+let encontradas = [];
+let pintadas = [];
+let figurasEscolhidas = [];
+let sequencia = ["", "", ""];
+
+const jogo = document.getElementById("jogo");
+const mensagem = document.getElementById("mensagem");
+
+const etapas = document.querySelectorAll(".etapa");
+
+function adicionarPontos(valor) {
+  pontos += valor;
+  document.getElementById("pontos").textContent = pontos;
+}
+
+function msg(texto) {
+  mensagem.style.display = "block";
+  mensagem.textContent = texto;
+}
+
+function atualizarEtapas() {
+  etapas.forEach((etapa, i) => {
+    etapa.classList.toggle("ativa", i <= fase);
+  });
+}
+
+function proximaFase() {
+  fase++;
+  mensagem.style.display = "none";
+  atualizarEtapas();
+  mostrarFase();
+}
+
+// LETRAS DAS FASES 1 E 2
+// Cada grade possui exatamente 10 letras V.
+
+function criarLetras() {
+  const outras = ["A","M","F","O","T","L","E","B","C","P","R","S","U","D"];
+  let letras = [...Array(10).fill("V")];
+
+  while (letras.length < 30) {
+    letras.push(outras[Math.floor(Math.random() * outras.length)]);
+  }
+
+  return letras.sort(() => Math.random() - 0.5);
+}
+
+let letrasFase1 = criarLetras();
+let letrasFase2 = criarLetras();
+
+// FASE 1: ENCONTRE 10 LETRAS V
+
+function faseUm() {
+
+  jogo.innerHTML = `
+    <span class="tag">FASE 1</span>
+    <h2>Encontre a letra V!</h2>
+    <p class="instrucao">
+      Existem 10 letras V escondidas.
+      Clique em todas elas!
+    </p>
+
+    <div class="grade">
+      ${letrasFase1.map((letra, i) => `
+        <button class="letra" data-index="${i}">
+          ${letra}
+        </button>
+      `).join("")}
+    </div>
+
+    <p class="contador">${encontradas.length}/10 letras encontradas</p>
+
+    <button class="botao" id="continuar">Continuar</button>
+  `;
+
+  document.querySelectorAll(".letra").forEach(botao => {
+    botao.addEventListener("click", () => {
+
+      const i = Number(botao.dataset.index);
+
+      if (encontradas.includes(i)) return;
+
+      if (letrasFase1[i] === "V") {
+
+        encontradas.push(i);
+        botao.classList.add("correta");
+        botao.textContent = "✓";
+
+        adicionarPontos(10);
+
+        msg("Muito bem! Você encontrou uma letra V! ⭐");
+
+        document.querySelector(".contador").textContent =
+          encontradas.length + "/10 letras encontradas";
+
+      } else {
+
+        botao.classList.add("errada");
+        msg("Essa não é a letra V. Tente novamente!");
+
+        setTimeout(() => botao.classList.remove("errada"), 500);
+      }
+    });
+  });
+
+  document.getElementById("continuar").onclick = () => {
+
+    if (encontradas.length === 10) {
+      proximaFase();
+    } else {
+      msg("Você ainda precisa encontrar as 10 letras V!");
+    }
+
+  };
+}
+
+// FASE 2: PINTE AS 10 LETRAS V
+
+function faseDois() {
+
+  jogo.innerHTML = `
+    <span class="tag">FASE 2</span>
+    <h2>Vamos pintar!</h2>
+
+    <p class="instrucao">
+      Clique nas 10 letras V para pintá-las de verde!
+    </p>
+
+    <div class="grade">
+      ${letrasFase2.map((letra, i) => `
+        <button class="letra" data-index="${i}">
+          ${letra}
+        </button>
+      `).join("")}
+    </div>
+
+    <p class="contador">${pintadas.length}/10 letras pintadas</p>
+
+    <button class="botao" id="continuar">Continuar</button>
+  `;
+
+  document.querySelectorAll(".letra").forEach(botao => {
+
+    botao.addEventListener("click", () => {
+
+      const i = Number(botao.dataset.index);
+
+      if (pintadas.includes(i)) return;
+
+      if (letrasFase2[i] === "V") {
+
+        pintadas.push(i);
+
+        botao.classList.add("pintada");
+
+        adicionarPontos(10);
+
+        msg("Muito bem! Letra V pintada de verde! 🎨");
+
+        document.querySelector(".contador").textContent =
+          pintadas.length + "/10 letras pintadas";
+
+      } else {
+
+        botao.classList.add("errada");
+
+        msg("Essa letra não é V! Continue procurando.");
+
+        setTimeout(() => botao.classList.remove("errada"), 500);
+
+      }
+
+    });
+
+  });
+
+  document.getElementById("continuar").onclick = () => {
+
+    if (pintadas.length === 10) {
+      proximaFase();
+    } else {
+      msg("Pinte todas as 10 letras V antes de continuar!");
+    }
+
+  };
+}
+
+// FASE 3: FIGURAS
+
+const figuras = [
+  {emoji:"👗", nome:"Vestido", certa:true},
+  {emoji:"🐄", nome:"Vaca", certa:true},
+  {emoji:"🎸", nome:"Violão", certa:true},
+  {emoji:"🗡️", nome:"Espada", certa:false},
+  {emoji:"🕯️", nome:"Vela", certa:true},
+  {emoji:"✈️", nome:"Avião", certa:false}
+];
+
+function faseTres() {
+
+  jogo.innerHTML = `
+    <span class="tag">FASE 3</span>
+    <h2>Quem começa com V?</h2>
+
+    <p class="instrucao">
+      Clique nas figuras cujos nomes começam com a letra V.
+    </p>
+
+    <div class="figuras">
+      ${figuras.map((figura, i) => `
+        <button class="figura" data-index="${i}">
+          <span class="emoji">${figura.emoji}</span>
+          ${figura.nome}
+        </button>
+      `).join("")}
+    </div>
+
+    <p class="contador">
+      ${figurasEscolhidas.filter(i => figuras[i].certa).length}/4 figuras corretas
+    </p>
+
+    <button class="botao" id="continuar">Continuar</button>
+  `;
+
+  document.querySelectorAll(".figura").forEach(botao => {
+
+    botao.addEventListener("click", () => {
+
+      const i = Number(botao.dataset.index);
+
+      if (figurasEscolhidas.includes(i)) return;
+
+      figurasEscolhidas.push(i);
+
+      if (figuras[i].certa) {
+
+        botao.classList.add("correta");
+        adicionarPontos(10);
+
+        msg("Parabéns! " + figuras[i].nome + " começa com V!");
+
+      } else {
+
+        botao.classList.add("errada");
+
+        msg("Essa palavra não começa com V!");
+
+      }
+
+      document.querySelector(".contador").textContent =
+        figurasEscolhidas.filter(i => figuras[i].certa).length +
+        "/4 figuras corretas";
+
+    });
+
+  });
+
+  document.getElementById("continuar").onclick = () => {
+
+    if (figurasEscolhidas.filter(i => figuras[i].certa).length === 4) {
+      proximaFase();
+    } else {
+      msg("Encontre todas as quatro figuras que começam com V!");
+    }
+
+  };
+}
+
+// FASE 4: SEQUÊNCIA
+
+function faseQuatro() {
+
+  jogo.innerHTML = `
+    <span class="tag">FASE 4</span>
+    <h2>Complete a sequência!</h2>
+
+    <p class="instrucao">
+      Clique nos espaços para colocar a letra V.
+    </p>
+
+    <div class="sequencia">
+
+      <span>V</span>
+
+      ${sequencia.map((letra, i) => `
+        <button class="espaco ${letra ? "preenchido" : ""}"
+          data-index="${i}">
+          ${letra || "?"}
+        </button>
+      `).join("")}
+
+      <span>V</span>
+
+    </div>
+
+    <button class="botao" id="conferir">Conferir</button>
+  `;
+
+  document.querySelectorAll(".espaco").forEach(botao => {
+
+    botao.onclick = () => {
+
+      const i = Number(botao.dataset.index);
+
+      sequencia[i] = sequencia[i] ? "" : "V";
+
+      faseQuatro();
+
+    };
+
+  });
+
+  document.getElementById("conferir").onclick = () => {
+
+    if (sequencia.every(letra => letra === "V")) {
+
+      adicionarPontos(30);
+
+      msg("Sequência completa! Muito bem! 🎉");
+
+      setTimeout(proximaFase, 900);
+
+    } else {
+
+      msg("Ainda faltam espaços para completar!");
+
+    }
+
+  };
+}
+
+// FINAL
+
+function faseFinal() {
+
+  jogo.innerHTML = `
+    <div class="final">🏆</div>
+
+    <span class="tag">MISSÃO CONCLUÍDA</span>
+
+    <h2>Parabéns!</h2>
+
+    <p class="instrucao">
+      Você completou todas as atividades
+      e aprendeu a letra V!
+    </p>
+
+    <h1 style="color:#45a967;font-size:55px">
+      ${pontos}
+    </h1>
+
+    <p class="contador">PONTOS CONQUISTADOS</p>
+
+    <button class="botao" id="reiniciar">
+      Jogar novamente
+    </button>
+  `;
+
+  etapas.forEach(e => e.classList.add("ativa"));
+
+  document.getElementById("reiniciar").onclick = () => {
+
+    fase = 0;
+    pontos = 0;
+
+    encontradas = [];
+    pintadas = [];
+    figurasEscolhidas = [];
+    sequencia = ["", "", ""];
+
+    letrasFase1 = criarLetras();
+    letrasFase2 = criarLetras();
+
+    document.getElementById("pontos").textContent = 0;
+
+    atualizarEtapas();
+    mensagem.style.display = "none";
+
+    mostrarFase();
+
+  };
+
+}
+
+function mostrarFase() {
+
+  if (fase === 0) faseUm();
+  else if (fase === 1) faseDois();
+  else if (fase === 2) faseTres();
+  else if (fase === 3) faseQuatro();
+  else faseFinal();
+
+}
+
+mostrarFase();
+
+</script>
+
 </body>
 </html>
