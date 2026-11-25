@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,9 +7,7 @@
 <title>Aventura da Letra V</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -19,9 +18,7 @@ body {
   text-align: center;
 }
 
-h1 {
-  color: #388e3c;
-}
+h1 { color: #388e3c; }
 
 .painel {
   max-width: 850px;
@@ -32,9 +29,7 @@ h1 {
   box-shadow: 0 4px 12px #0002;
 }
 
-h2 {
-  color: #388e3c;
-}
+h2 { color: #388e3c; }
 
 button {
   background: #4caf50;
@@ -45,10 +40,6 @@ button {
   font-size: 17px;
   cursor: pointer;
   margin: 8px;
-}
-
-button:hover {
-  background: #388e3c;
 }
 
 button:disabled {
@@ -114,10 +105,6 @@ button:disabled {
   cursor: crosshair;
 }
 
-.pintura-item span {
-  display: block;
-}
-
 .feedback {
   font-size: 18px;
   font-weight: bold;
@@ -125,9 +112,19 @@ button:disabled {
   margin: 15px;
 }
 
-.progresso {
-  font-size: 16px;
-  color: #555;
+.progresso { color: #555; }
+
+#tracoCanvas {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border: 3px solid #c5e1a5;
+  border-radius: 18px;
+  background: #fff;
+  touch-action: none;
+  display: block;
+  margin: 20px auto;
+  cursor: crosshair;
 }
 
 @media (max-width: 600px) {
@@ -146,13 +143,9 @@ button:disabled {
     gap: 8px;
   }
 
-  .pintura-item {
-    min-height: 95px;
-  }
+  .pintura-item { min-height: 95px; }
 
-  .pintura-item canvas {
-    height: 90px;
-  }
+  .pintura-item canvas { height: 90px; }
 }
 </style>
 </head>
@@ -163,6 +156,7 @@ button:disabled {
 
 <div class="painel">
 
+  <!-- FASE 1 -->
   <div id="fase1">
     <h2>Fase 1: Encontre a letra V!</h2>
     <p>Encontre e clique em todas as 10 letras V.</p>
@@ -174,6 +168,7 @@ button:disabled {
     <button id="avancar1" onclick="irFase2()" disabled>Próxima fase</button>
   </div>
 
+  <!-- FASE 2 -->
   <div id="fase2" style="display:none">
     <h2>Fase 2: Vamos pintar!</h2>
     <p>Use o mouse ou o dedo para pintar as 10 letras V de verde!</p>
@@ -185,9 +180,10 @@ button:disabled {
     <button id="avancar2" onclick="irFase3()" disabled>Próxima fase</button>
   </div>
 
+  <!-- FASE 3 -->
   <div id="fase3" style="display:none">
     <h2>Fase 3: Qual começa com V?</h2>
-    <p>Escolha a imagem cuja palavra começa com a letra V.</p>
+    <p>Escolha as imagens cujas palavras começam com a letra V.</p>
 
     <div class="grade" id="grade3"></div>
 
@@ -195,19 +191,20 @@ button:disabled {
     <button id="avancar3" onclick="irFase4()" disabled>Próxima fase</button>
   </div>
 
+  <!-- FASE 4 -->
   <div id="fase4" style="display:none">
-    <h2>Fase 4: Complete a sequência!</h2>
-    <p>Qual letra está faltando?</p>
+    <h2>Fase 4: Vamos pontilhar!</h2>
+    <p id="instrucaoTraco">Passe o dedo ou o mouse sobre os pontinhos para formar a letra V.</p>
+    <p class="progresso" id="etapaTraco">Etapa 1 de 3</p>
 
-    <h1 style="font-size:45px">V - V - ? - V - V</h1>
+    <canvas id="tracoCanvas" width="500" height="300"></canvas>
 
-    <button onclick="responderSequencia('A')">A</button>
-    <button onclick="responderSequencia('V')">V</button>
-    <button onclick="responderSequencia('F')">F</button>
-
-    <div class="feedback" id="feedback4"></div>
+    <div class="feedback" id="feedbackTraco"></div>
+    <button id="limparTraco" onclick="reiniciarTraco()">Tentar novamente</button>
+    <button id="proximoTraco" onclick="proximaTraco()" disabled>Próxima letra</button>
   </div>
 
+  <!-- FINAL -->
   <div id="final" style="display:none">
     <h2>🏆 Parabéns!</h2>
     <p>Você completou todas as fases da Aventura da Letra V!</p>
@@ -223,16 +220,18 @@ function embaralhar(array) {
 }
 
 function criarLetras() {
-  const outras = ["A","B","C","D","E","F","G","H","I","L",
-                  "M","N","O","P","R","S","T","U","X","Z"];
+  const outras = [
+    "A","B","C","D","E","F","G","H","I","L",
+    "M","N","O","P","R","S","T","U","X","Z"
+  ];
 
-  return embaralhar([
-    ...Array(10).fill("V"),
-    ...outras
-  ]);
+  return embaralhar([...Array(10).fill("V"), ...outras]);
 }
 
+// =========================
 // FASE 1
+// =========================
+
 let encontrados = 0;
 const grade1 = document.getElementById("grade1");
 
@@ -242,8 +241,10 @@ criarLetras().forEach(letra => {
   elemento.textContent = letra;
 
   elemento.addEventListener("click", () => {
-    if (elemento.classList.contains("correta") ||
-        elemento.classList.contains("errada")) return;
+    if (
+      elemento.classList.contains("correta") ||
+      elemento.classList.contains("errada")
+    ) return;
 
     if (letra === "V") {
       elemento.classList.add("correta");
@@ -273,7 +274,10 @@ function irFase2() {
   montarPintura();
 }
 
-// FASE 2: PINTURA LIVRE
+// =========================
+// FASE 2: PINTURA
+// =========================
+
 let pintadas = new Set();
 
 function montarPintura() {
@@ -289,7 +293,6 @@ function montarPintura() {
       canvas.width = 160;
       canvas.height = 110;
       item.appendChild(canvas);
-
       prepararCanvas(canvas, indice);
     } else {
       const span = document.createElement("span");
@@ -304,7 +307,6 @@ function montarPintura() {
 function prepararCanvas(canvas, indice) {
   const ctx = canvas.getContext("2d");
 
-  // Máscara que define a área interna da letra V.
   const mascara = document.createElement("canvas");
   mascara.width = canvas.width;
   mascara.height = canvas.height;
@@ -316,77 +318,24 @@ function prepararCanvas(canvas, indice) {
   mctx.fillStyle = "#000";
   mctx.fillText("V", 80, 55);
 
-  // Camada onde a criança pinta.
   const tinta = document.createElement("canvas");
   tinta.width = canvas.width;
   tinta.height = canvas.height;
 
   const tctx = tinta.getContext("2d");
 
-  // Desenha o contorno da letra.
-  ctx.font = "bold 100px Arial";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = "#333";
-  ctx.strokeText("V", 80, 55);
-
   let desenhando = false;
   let jaPintou = false;
 
   function posicao(event) {
     const rect = canvas.getBoundingClientRect();
-
     return {
       x: (event.clientX - rect.left) * canvas.width / rect.width,
       y: (event.clientY - rect.top) * canvas.height / rect.height
     };
   }
 
-  canvas.addEventListener("pointerdown", event => {
-    event.preventDefault();
-    desenhando = true;
-    canvas.setPointerCapture(event.pointerId);
-
-    const p = posicao(event);
-    tctx.beginPath();
-    tctx.moveTo(p.x, p.y);
-    tctx.lineTo(p.x + 0.1, p.y + 0.1);
-    tctx.strokeStyle = "#35b84a";
-    tctx.lineWidth = 12;
-    tctx.lineCap = "round";
-    tctx.lineJoin = "round";
-    tctx.stroke();
-
-    atualizarCanvas();
-  });
-
-  canvas.addEventListener("pointermove", event => {
-    if (!desenhando) return;
-    event.preventDefault();
-
-    const p = posicao(event);
-    tctx.lineTo(p.x, p.y);
-    tctx.strokeStyle = "#35b84a";
-    tctx.lineWidth = 12;
-    tctx.lineCap = "round";
-    tctx.lineJoin = "round";
-    tctx.stroke();
-
-    atualizarCanvas();
-  });
-
-  function parar() {
-    desenhando = false;
-    tctx.beginPath();
-  }
-
-  canvas.addEventListener("pointerup", parar);
-  canvas.addEventListener("pointercancel", parar);
-  canvas.addEventListener("lostpointercapture", parar);
-
   function atualizarCanvas() {
-    // Mantém a tinta somente dentro do formato da letra.
     const camada = document.createElement("canvas");
     camada.width = canvas.width;
     camada.height = canvas.height;
@@ -420,6 +369,53 @@ function prepararCanvas(canvas, indice) {
       }
     }
   }
+
+  canvas.addEventListener("pointerdown", event => {
+    event.preventDefault();
+    desenhando = true;
+    canvas.setPointerCapture(event.pointerId);
+
+    const p = posicao(event);
+    tctx.beginPath();
+    tctx.moveTo(p.x, p.y);
+    tctx.lineTo(p.x + 0.1, p.y + 0.1);
+    tctx.strokeStyle = "#35b84a";
+    tctx.lineWidth = 12;
+    tctx.lineCap = "round";
+    tctx.stroke();
+
+    atualizarCanvas();
+  });
+
+  canvas.addEventListener("pointermove", event => {
+    if (!desenhando) return;
+    event.preventDefault();
+
+    const p = posicao(event);
+    tctx.lineTo(p.x, p.y);
+    tctx.strokeStyle = "#35b84a";
+    tctx.lineWidth = 12;
+    tctx.lineCap = "round";
+    tctx.stroke();
+
+    atualizarCanvas();
+  });
+
+  function parar() {
+    desenhando = false;
+    tctx.beginPath();
+  }
+
+  canvas.addEventListener("pointerup", parar);
+  canvas.addEventListener("pointercancel", parar);
+  canvas.addEventListener("lostpointercapture", parar);
+
+  ctx.font = "bold 100px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "#333";
+  ctx.strokeText("V", 80, 55);
 }
 
 function irFase3() {
@@ -428,7 +424,10 @@ function irFase3() {
   montarFase3();
 }
 
+// =========================
 // FASE 3
+// =========================
+
 function montarFase3() {
   const opcoes = [
     { nome: "Vaca", emoji: "🐄", certa: true },
@@ -448,6 +447,8 @@ function montarFase3() {
     botao.innerHTML = `${opcao.emoji}<br>${opcao.nome}`;
 
     botao.onclick = () => {
+      if (botao.disabled) return;
+
       if (opcao.certa) {
         botao.style.background = "#2e7d32";
         botao.disabled = true;
@@ -477,18 +478,216 @@ function montarFase3() {
 function irFase4() {
   document.getElementById("fase3").style.display = "none";
   document.getElementById("fase4").style.display = "block";
+  iniciarTracado();
 }
 
-// FASE 4
-function responderSequencia(letra) {
-  const feedback = document.getElementById("feedback4");
+// =========================
+// FASE 4: PONTILHADO
+// =========================
 
-  if (letra === "V") {
-    feedback.textContent = "Resposta correta! Parabéns!";
+const canvasTraco = document.getElementById("tracoCanvas");
+const ctxTraco = canvasTraco.getContext("2d");
+
+const etapasTraco = [
+  {
+    nome: "Letra V maiúscula",
+    pontos: [[130, 55], [250, 245], [370, 55]]
+  },
+  {
+    nome: "Mais uma letra V!",
+    pontos: [[130, 55], [250, 245], [370, 55]]
+  },
+  {
+    nome: "Agora a letra v minúscula",
+    pontos: [[145, 105], [250, 225], [355, 105]]
+  }
+];
+
+let etapaAtual = 0;
+let desenhandoTraco = false;
+let cobertura = new Set();
+let segmentos = [];
+let ultimaPosicao = null;
+let tracoConcluido = false;
+
+function distanciaPontoSegmento(p, a, b) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const comprimento = dx * dx + dy * dy;
+
+  let t = comprimento === 0 ? 0 :
+    ((p.x - a.x) * dx + (p.y - a.y) * dy) / comprimento;
+
+  t = Math.max(0, Math.min(1, t));
+
+  const x = a.x + t * dx;
+  const y = a.y + t * dy;
+
+  return Math.hypot(p.x - x, p.y - y);
+}
+
+function prepararSegmentos() {
+  const pontos = etapasTraco[etapaAtual].pontos;
+
+  segmentos = [
+    { a: {x: pontos[0][0], y: pontos[0][1]},
+      b: {x: pontos[1][0], y: pontos[1][1]} },
+    { a: {x: pontos[1][0], y: pontos[1][1]},
+      b: {x: pontos[2][0], y: pontos[2][1]} }
+  ];
+}
+
+function desenharGuia() {
+  ctxTraco.clearRect(0, 0, 500, 300);
+
+  // Pontilhado da letra
+  segmentos.forEach(seg => {
+    const quantidade = 22;
+
+    for (let i = 0; i <= quantidade; i++) {
+      const t = i / quantidade;
+      const x = seg.a.x + (seg.b.x - seg.a.x) * t;
+      const y = seg.a.y + (seg.b.y - seg.a.y) * t;
+
+      ctxTraco.beginPath();
+      ctxTraco.arc(x, y, 4, 0, Math.PI * 2);
+      ctxTraco.fillStyle = "#8bc34a";
+      ctxTraco.fill();
+    }
+  });
+
+  // Pontos de início e fim
+  const pontos = etapasTraco[etapaAtual].pontos;
+
+  [pontos[0], pontos[2]].forEach((p, i) => {
+    ctxTraco.beginPath();
+    ctxTraco.arc(p[0], p[1], 9, 0, Math.PI * 2);
+    ctxTraco.fillStyle = i === 0 ? "#2196f3" : "#ff9800";
+    ctxTraco.fill();
+  });
+}
+
+function iniciarTracado() {
+  etapaAtual = 0;
+  carregarEtapa();
+}
+
+function carregarEtapa() {
+  cobertura = new Set();
+  tracoConcluido = false;
+  ultimaPosicao = null;
+
+  document.getElementById("etapaTraco").textContent =
+    `Etapa ${etapaAtual + 1} de 3`;
+
+  document.getElementById("instrucaoTraco").textContent =
+    etapasTraco[etapaAtual].nome +
+    ". Passe o dedo ou o mouse sobre os pontinhos.";
+
+  document.getElementById("feedbackTraco").textContent = "";
+  document.getElementById("proximoTraco").disabled = true;
+
+  prepararSegmentos();
+  desenharGuia();
+}
+
+function reiniciarTraco() {
+  carregarEtapa();
+}
+
+function posicaoTraco(event) {
+  const rect = canvasTraco.getBoundingClientRect();
+
+  return {
+    x: (event.clientX - rect.left) * 500 / rect.width,
+    y: (event.clientY - rect.top) * 300 / rect.height
+  };
+}
+
+function registrarCobertura(p) {
+  segmentos.forEach((seg, indice) => {
+    const distancia = distanciaPontoSegmento(p, seg.a, seg.b);
+
+    if (distancia < 24) {
+      const dx = seg.b.x - seg.a.x;
+      const dy = seg.b.y - seg.a.y;
+      const comprimento = dx * dx + dy * dy;
+
+      let t = ((p.x - seg.a.x) * dx + (p.y - seg.a.y) * dy)
+        / comprimento;
+
+      t = Math.max(0, Math.min(1, t));
+
+      const parte = Math.min(19, Math.floor(t * 20));
+      cobertura.add(indice * 20 + parte);
+    }
+  });
+
+  if (cobertura.size >= 30 && !tracoConcluido) {
+    tracoConcluido = true;
+    document.getElementById("feedbackTraco").textContent =
+      "Muito bem! Você conseguiu formar a letra!";
+    document.getElementById("proximoTraco").disabled = false;
+  }
+}
+
+canvasTraco.addEventListener("pointerdown", event => {
+  if (tracoConcluido) return;
+
+  event.preventDefault();
+  desenhandoTraco = true;
+  canvasTraco.setPointerCapture(event.pointerId);
+
+  ultimaPosicao = posicaoTraco(event);
+
+  ctxTraco.beginPath();
+  ctxTraco.moveTo(ultimaPosicao.x, ultimaPosicao.y);
+  ctxTraco.strokeStyle = "#2196f3";
+  ctxTraco.lineWidth = 13;
+  ctxTraco.lineCap = "round";
+  ctxTraco.lineJoin = "round";
+  ctxTraco.lineTo(ultimaPosicao.x + 0.1, ultimaPosicao.y + 0.1);
+  ctxTraco.stroke();
+
+  registrarCobertura(ultimaPosicao);
+});
+
+canvasTraco.addEventListener("pointermove", event => {
+  if (!desenhandoTraco || tracoConcluido) return;
+
+  event.preventDefault();
+
+  const p = posicaoTraco(event);
+
+  ctxTraco.beginPath();
+  ctxTraco.moveTo(ultimaPosicao.x, ultimaPosicao.y);
+  ctxTraco.lineTo(p.x, p.y);
+  ctxTraco.strokeStyle = "#2196f3";
+  ctxTraco.lineWidth = 13;
+  ctxTraco.lineCap = "round";
+  ctxTraco.lineJoin = "round";
+  ctxTraco.stroke();
+
+  registrarCobertura(p);
+  ultimaPosicao = p;
+});
+
+function pararTracado() {
+  desenhandoTraco = false;
+  ultimaPosicao = null;
+}
+
+canvasTraco.addEventListener("pointerup", pararTracado);
+canvasTraco.addEventListener("pointercancel", pararTracado);
+canvasTraco.addEventListener("lostpointercapture", pararTracado);
+
+function proximaTraco() {
+  if (etapaAtual < 2) {
+    etapaAtual++;
+    carregarEtapa();
+  } else {
     document.getElementById("fase4").style.display = "none";
     document.getElementById("final").style.display = "block";
-  } else {
-    feedback.textContent = "Tente novamente!";
   }
 }
 </script>
